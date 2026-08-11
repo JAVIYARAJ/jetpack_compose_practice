@@ -12,8 +12,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.AccountBalanceWallet
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.ChangeHistory
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Money
@@ -91,7 +91,7 @@ fun PayPalBalanceActiveCard() {
                     fontSize = 25.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
-                    lineHeight = 30.sp
+                    lineHeight = 30.sp,
                 )
 
                 Spacer(
@@ -153,7 +153,7 @@ fun PayPalBalanceActiveCard() {
                         modifier = Modifier.weight(1f)
                     )
 
-                    Icon(imageVector = Icons.Default.KeyboardArrowRight, contentDescription = "back_icon", tint = Color.Black,)
+                    Icon(imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = "back_icon", tint = Color.Black,modifier = Modifier.size(28.dp))
                 }
             }
         }
