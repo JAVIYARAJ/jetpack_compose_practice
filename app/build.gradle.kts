@@ -63,4 +63,7 @@ dependencies {
 
     // Required for type-safe arguments serialization
     implementation(libs.kotlinx.serialization.json)
+
+    implementation(libs.lottie.compose) // Use the latest stable version
+
 }

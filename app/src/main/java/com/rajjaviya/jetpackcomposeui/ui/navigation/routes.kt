@@ -8,4 +8,10 @@ sealed class Route {
     data object SplashScreen : Route()
     @Serializable
     data object HomeScreen : Route()
+
+    @Serializable
+    data object BondScreen : Route()
+
+    @Serializable
+    data object BondWelcomeScreen : Route()
 }

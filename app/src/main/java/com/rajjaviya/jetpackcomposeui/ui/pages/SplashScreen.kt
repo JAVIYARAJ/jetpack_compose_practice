@@ -31,16 +31,16 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.rajjaviya.jetpackcomposeui.R
+import com.rajjaviya.jetpackcomposeui.ui.navigation.Route
 import com.rajjaviya.jetpackcomposeui.ui.theme.RegularRobotoFonts
 import com.rajjaviya.jetpackcomposeui.ui.theme.RegularRubikFonts
 
-@Preview(showBackground = true)
 @Composable
-fun SplashScreen() {
+fun SplashScreen(navController: NavHostController) {
     val backgroundColor = Color(0xFFFAF4EC)
     val primaryGreen = Color(0xFF093627)
 
@@ -61,7 +61,9 @@ fun SplashScreen() {
                         .fillMaxWidth()
                         .height(56.dp),
                     shape = CircleShape,
-                    onClick = { }
+                    onClick = {
+                        navController.navigate(Route.HomeScreen)
+                    }
                 ) {
                     Text(
                         text = "Get Started",
