@@ -16,6 +16,22 @@ val RegularRobotoFonts = FontFamily(
     Font(R.font.regular_roboto, FontWeight.Normal),
 )
 
+val EduRegularFonts = FontFamily(
+    Font(R.font.edu_regular, FontWeight.Normal),
+)
+
+val EduMediumFonts = FontFamily(
+    Font(R.font.edu_medium, FontWeight.Normal),
+)
+
+val EduSemiBoldFonts = FontFamily(
+    Font(R.font.edu_semi_bold, FontWeight.Normal),
+)
+
+val EduBoldFonts = FontFamily(
+    Font(R.font.edu_bold, FontWeight.Normal),
+)
+
 // Set of Material typography styles to start with
 val Typography = Typography(
     // Display

@@ -3,15 +3,16 @@ package com.rajjaviya.jetpackcomposeui.ui.navigation
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed class Route {
+sealed class Routes {
     @Serializable
-    data object SplashScreen : Route()
-    @Serializable
-    data object HomeScreen : Route()
+    data object SplashScreen : Routes()
 
     @Serializable
-    data object BondScreen : Route()
+    data object BondAddStoryScreen : Routes()
 
     @Serializable
-    data object BondWelcomeScreen : Route()
+    data object BondWelcomeScreen : Routes()
+
+    @Serializable
+    data object BondDiscoverScreen : Routes()
 }

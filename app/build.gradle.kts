@@ -66,4 +66,9 @@ dependencies {
 
     implementation(libs.lottie.compose) // Use the latest stable version
 
+    implementation(libs.androidx.compose.material)
+
+    // The Extended Icons library
+    implementation(libs.androidx.material.icons.extended)
+
 }
