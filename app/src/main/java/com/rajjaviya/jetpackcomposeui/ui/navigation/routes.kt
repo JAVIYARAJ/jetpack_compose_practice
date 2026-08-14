@@ -15,4 +15,7 @@ sealed class Routes {
 
     @Serializable
     data object BondDiscoverScreen : Routes()
+
+    @Serializable
+    data object BondDiscoverResultScreen : Routes()
 }

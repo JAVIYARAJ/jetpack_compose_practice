@@ -42,6 +42,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rajjaviya.jetpackcomposeui.R
+import com.rajjaviya.jetpackcomposeui.ui.components.BondIconComponent
 import com.rajjaviya.jetpackcomposeui.ui.core.DummyModelConstant
 import com.rajjaviya.jetpackcomposeui.ui.theme.BackgroundColor
 
@@ -95,14 +96,9 @@ fun BondDiscoverScreen() {
     }, topBar = {
         CenterAlignedTopAppBar(
             navigationIcon = {
-                IconButton(
-                    colors = IconButtonDefaults.iconButtonColors(
-                        containerColor = Color.Gray.copy(alpha = 0.2f)
-                    ), modifier = Modifier
-                        .padding(start = 10.dp)
-                        .size(40.dp), onClick = {}) {
-                    Icon(Icons.Default.ArrowBackIosNew, contentDescription = "back icon")
-                }
+                BondIconComponent(icon = Icons.Default.ArrowBackIosNew, onTap = {
+
+                })
             },
             colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = BackgroundColor
@@ -123,7 +119,7 @@ fun BondDiscoverScreen() {
             ) {
 
                 Spacer(
-                    modifier = Modifier.height(80.dp)
+                    modifier = Modifier.height(50.dp)
                 )
 
                 DiscoverTile(title = "\uD83C\uDF7D\uFE0F Best food to get right now")
@@ -137,14 +133,14 @@ fun BondDiscoverScreen() {
                 DiscoverTile(title = "\uD83C\uDFAC TV show that I will love")
 
                 Spacer(
-                    modifier = Modifier.height(50.dp)
+                    modifier = Modifier.height(30.dp)
                 )
 
                 val messages = DummyModelConstant.listOfDiscoverMessages;
 
                 LazyColumn(
                     modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    verticalArrangement = Arrangement.spacedBy(20.dp),
                 ) {
                     items(messages.size, key = { index ->
                         "message-${index}"
@@ -165,13 +161,30 @@ fun BondDiscoverScreen() {
                             Surface(
                                 color = if (isApiResponse) {
                                     Color(0XFFebebeb)
-                                } else Color.Black, shape = RoundedCornerShape(30.dp)
+                                } else Color.Black,
+                                shape = if (isApiResponse) {
+                                    RoundedCornerShape(
+                                        topEnd = 15.dp,
+                                        bottomStart = 15.dp,
+                                        bottomEnd = 15.dp
+                                    )
+                                } else {
+                                    RoundedCornerShape(
+                                        topEnd = 15.dp,
+                                        topStart = 15.dp,
+                                        bottomStart = 15.dp
+                                    )
+                                },
                             ) {
                                 Text(
                                     messages[index].message,
                                     style = MaterialTheme.typography.titleMedium,
                                     modifier = Modifier.padding(
-                                        horizontal = 10.dp, vertical = 12.dp
+                                        horizontal = if (isApiResponse) {
+                                            15.dp
+                                        } else {
+                                            5.dp
+                                        }, vertical = 12.dp
                                     ),
                                     color = if (isApiResponse) {
                                         Color.Black
