@@ -1,5 +1,7 @@
 package com.rajjaviya.jetpackcomposeui.ui.pages
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -123,15 +125,25 @@ fun BondOtpVerificationScreen(
                 .padding(end = 16.dp, bottom = 16.dp),
             contentAlignment = Alignment.BottomEnd
         ) {
+            val fabColor by animateColorAsState(
+                targetValue = if (otp.isNotEmpty()) Color.Black else Color(0xFFCCCCCC),
+                animationSpec = tween(300),
+                label = "fabColor"
+            )
+
             IconButton(
                 colors = IconButtonDefaults.iconButtonColors(
-                    containerColor = Color.Black,
-                    contentColor = Color.White
+                    containerColor = fabColor,
+                    contentColor = Color.White,
+                    disabledContainerColor = fabColor,
+                    disabledContentColor = Color.White,
                 ),
                 shape = CircleShape,
                 modifier = Modifier.size(55.dp),
                 onClick = {
-                    navController.navigate(Routes.BondOnBoardingNameScreen)
+                    if(otp.isNotEmpty()){
+                        navController.navigate(Routes.BondOnBoardingNameScreen)
+                    }
                 }
             ) {
                 Icon(

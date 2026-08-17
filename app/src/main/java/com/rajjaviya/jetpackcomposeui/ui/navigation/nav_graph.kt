@@ -21,7 +21,7 @@ import com.rajjaviya.jetpackcomposeui.ui.pages.BondWelcomeScreen
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NavGraph(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = Routes.BondOnBoardingNameScreen) {
+    NavHost(navController = navController, startDestination = Routes.SplashScreen) {
 
         composable<Routes.SplashScreen> {
             BondSplashScreen(navController = navController)
