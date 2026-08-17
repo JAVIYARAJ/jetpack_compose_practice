@@ -36,13 +36,29 @@ fun BondSplashScreen(navController: NavHostController) {
                 .padding(it)
         ) {
 
-            Text("Connect your memories", fontSize = 55.sp, fontWeight = FontWeight.SemiBold, fontFamily = EduSemiBoldFonts, maxLines = 3, modifier = Modifier.padding(horizontal = 15.dp), lineHeight = 55.sp, textAlign = TextAlign.Center)
+            Text(
+                "Connect your memories",
+                fontSize = 55.sp,
+                fontWeight = FontWeight.SemiBold,
+                fontFamily = EduSemiBoldFonts,
+                maxLines = 3,
+                modifier = Modifier.padding(horizontal = 15.dp),
+                lineHeight = 55.sp,
+                textAlign = TextAlign.Center
+            )
 
             BondBrandLogoAnimation {
                 navController.navigate(Routes.BondWelcomeScreen)
             }
 
-            Image(painter = painterResource(R.drawable.bond_app_icon), contentDescription = "logo", modifier = Modifier.fillMaxWidth().padding(horizontal = 15.dp).height(150.dp))
+            Image(
+                painter = painterResource(R.drawable.bond_app_icon),
+                contentDescription = "logo",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 15.dp)
+                    .height(150.dp)
+            )
         }
     }
 }

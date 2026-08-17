@@ -53,7 +53,7 @@ fun BondWelcomeScreen(navController: NavHostController) {
                         contentColor = Color.White
                     ),
                     onClick = {
-                        navController.navigate(Routes.BondAddStoryScreen)
+                        navController.navigate(Routes.BondRegisterScreen)
                     },
                     modifier = Modifier
                         .fillMaxWidth()

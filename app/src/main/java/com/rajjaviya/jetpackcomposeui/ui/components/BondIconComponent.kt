@@ -2,8 +2,6 @@ package com.rajjaviya.jetpackcomposeui.ui.components
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -20,7 +18,7 @@ fun BondIconComponent(icon: ImageVector, onTap: () -> Unit) {
             containerColor = Color.Gray.copy(alpha = 0.2f)
         ), modifier = Modifier
             .padding(start = 10.dp, end = 10.dp)
-            .size(35.dp), onClick = onTap
+            .size(45.dp), onClick = onTap
     ) {
         Icon(icon, contentDescription = "back icon")
     }

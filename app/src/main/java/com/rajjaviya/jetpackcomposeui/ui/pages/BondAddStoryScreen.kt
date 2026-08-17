@@ -22,11 +22,11 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Card
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -36,7 +36,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,6 +50,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rajjaviya.jetpackcomposeui.R
+import com.rajjaviya.jetpackcomposeui.ui.components.BondCommonTopBar
 import com.rajjaviya.jetpackcomposeui.ui.core.DummyModelConstant
 import com.rajjaviya.jetpackcomposeui.ui.core.Utility
 import com.rajjaviya.jetpackcomposeui.ui.model.BondStoryModel
@@ -86,7 +86,7 @@ fun BondScreen() {
                 },
                 trailingIcon = {
                     IconButton(onClick = {}) {
-                        Icon(Icons.Filled.Send, contentDescription = "send message")
+                        Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "send message")
                     }
                 },
                 leadingIcon = {
@@ -98,28 +98,21 @@ fun BondScreen() {
                 })
         }
     }, containerColor = Color(0XFFf6f6f6), modifier = Modifier.fillMaxSize(), topBar = {
-        CenterAlignedTopAppBar(
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = screenBackground
-            ), title = {
-                Image(
-                    painter = painterResource(R.drawable.bond_app_icon),
-                    contentDescription = "app bar icon",
-                    modifier = Modifier.size(100.dp)
-                )
-            }, actions = {
-                IconButton(
-                    onClick = {
+        BondCommonTopBar(
+            navigationVisible = false,
+            actions = {
+            IconButton(
+                onClick = {
 
-                    }) {
-                    Icon(
-                        Icons.Default.Add,
-                        contentDescription = "Add action",
-                        tint = Color.Black,
-                        modifier = Modifier.size(30.dp),
-                    )
-                }
-            })
+                }) {
+                Icon(
+                    Icons.Default.Add,
+                    contentDescription = "Add action",
+                    tint = Color.Black,
+                    modifier = Modifier.size(30.dp),
+                )
+            }
+        })
     }) { innerPadding ->
         Surface(
             modifier = Modifier
