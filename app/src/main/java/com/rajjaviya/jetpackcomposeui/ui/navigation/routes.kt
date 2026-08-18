@@ -23,7 +23,7 @@ sealed class Routes {
     data object BondRegisterScreen : Routes()
 
     @Serializable
-    data class BondOtpVerificationScreen(val phoneNumber: String) : Routes()
+    data object BondOtpVerificationScreen : Routes()
 
     @Serializable
     data object BondOnBoardingNameScreen : Routes()
@@ -34,4 +34,9 @@ sealed class Routes {
     @Serializable
     data object BondUserProfileScreen : Routes()
 
+    @Serializable
+    data object BondUserCaptureMemoryScreen : Routes()
+
+    @Serializable
+    data object BondUserIntroScreen : Routes()
 }

@@ -35,17 +35,23 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withLink
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.rajjaviya.jetpackcomposeui.ui.components.BondCommonTopBar
 import com.rajjaviya.jetpackcomposeui.ui.components.BondOtpField
+import com.rajjaviya.jetpackcomposeui.ui.core.extensions.orDefault
 import com.rajjaviya.jetpackcomposeui.ui.navigation.Routes
 import com.rajjaviya.jetpackcomposeui.ui.theme.BackgroundColor
+import com.rajjaviya.jetpackcomposeui.ui.viewmodel.BondOnBoardingViewModel
 
 @Composable
 fun BondOtpVerificationScreen(
     navController: NavHostController,
-    phoneNumber: String,
+    viewModel: BondOnBoardingViewModel,
 ) {
+
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
+
 
     var otp by rememberSaveable {
         mutableStateOf("")
@@ -73,7 +79,7 @@ fun BondOtpVerificationScreen(
                 )
 
                 Text(
-                    "Enter the code we sent to $phoneNumber",
+                    "Enter the code we sent to ${state.phoneNumber.orDefault()}",
                     modifier = Modifier.padding(horizontal = 20.dp),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.W200,
@@ -141,7 +147,7 @@ fun BondOtpVerificationScreen(
                 shape = CircleShape,
                 modifier = Modifier.size(55.dp),
                 onClick = {
-                    if(otp.isNotEmpty()){
+                    if (otp.isNotEmpty()) {
                         navController.navigate(Routes.BondOnBoardingNameScreen)
                     }
                 }

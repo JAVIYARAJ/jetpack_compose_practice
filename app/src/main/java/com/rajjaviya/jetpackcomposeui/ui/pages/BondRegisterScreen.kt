@@ -1,4 +1,5 @@
 package com.rajjaviya.jetpackcomposeui.ui.pages
+
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -19,25 +20,26 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.rajjaviya.jetpackcomposeui.ui.components.BondCommonTopBar
 import com.rajjaviya.jetpackcomposeui.ui.components.BondCountryPickerBasicText
-import com.rajjaviya.jetpackcomposeui.ui.navigation.Routes
 import com.rajjaviya.jetpackcomposeui.ui.theme.BackgroundColor
+import com.rajjaviya.jetpackcomposeui.ui.viewmodel.BondOnBoardingViewModel
+import com.rajjaviya.jetpackcomposeui.ui.navigation.Routes
 
 @Composable
-fun BondRegisterScreen(navController: NavHostController) {
+fun BondRegisterScreen(navController: NavHostController, viewModel: BondOnBoardingViewModel) {
     // Holds the latest full phone number (country code + digits) from the picker
-    var fullPhoneNumber by remember { mutableStateOf("") }
+
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
+
 
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -58,14 +60,20 @@ fun BondRegisterScreen(navController: NavHostController) {
                     Modifier.fillMaxHeight(0.2f)
                 )
 
-                Text("Enter your phone number", modifier = Modifier.padding(horizontal = 20.dp), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.W200, fontSize = 18.sp)
+                Text(
+                    "Enter your phone number",
+                    modifier = Modifier.padding(horizontal = 20.dp),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.W200,
+                    fontSize = 18.sp
+                )
 
                 Spacer(
                     modifier = Modifier.height(25.dp)
                 )
 
                 BondCountryPickerBasicText(
-                    onPhoneNumberReady = { fullPhoneNumber = it }
+                    onPhoneNumberReady = { viewModel.updatePhoneNumber(it) }
                 )
             }
         }
@@ -88,7 +96,7 @@ fun BondRegisterScreen(navController: NavHostController) {
                 modifier = Modifier.size(55.dp),
                 onClick = {
                     navController.navigate(
-                        Routes.BondOtpVerificationScreen(phoneNumber = fullPhoneNumber)
+                        Routes.BondOtpVerificationScreen
                     )
                 }
             ) {

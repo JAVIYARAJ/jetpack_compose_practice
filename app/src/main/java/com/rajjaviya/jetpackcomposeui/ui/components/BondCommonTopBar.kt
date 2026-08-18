@@ -19,8 +19,9 @@ import com.rajjaviya.jetpackcomposeui.ui.theme.BackgroundColor
 @Composable
 fun BondCommonTopBar(
     actions: @Composable RowScope.() -> Unit = {},
+    title: (@Composable () -> Unit)? = null,
     navigationVisible: Boolean = true,
-    onTap: () -> Unit = {}
+    onTap: () -> Unit = {},
 ) {
     CenterAlignedTopAppBar(
         navigationIcon = {
@@ -29,15 +30,19 @@ fun BondCommonTopBar(
                     onTap()
                 })
             }
-        },
-        colors = TopAppBarDefaults.topAppBarColors(
+        }, colors = TopAppBarDefaults.topAppBarColors(
             containerColor = BackgroundColor
         ), title = {
-            Image(
-                painter = painterResource(R.drawable.bond_app_icon),
-                contentDescription = "app bar icon",
-                modifier = Modifier.size(100.dp)
-            )
+            if (title != null) {
+                title()
+            } else {
+                Image(
+                    painter = painterResource(R.drawable.bond_app_icon),
+                    contentDescription = "app bar icon",
+                    modifier = Modifier.size(100.dp)
+                )
+            }
+
         }, actions = actions
     )
 }

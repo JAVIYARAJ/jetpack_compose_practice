@@ -1,8 +1,13 @@
 package com.rajjaviya.jetpackcomposeui.ui.pages
 
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -15,29 +20,48 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import coil3.compose.AsyncImage
 import com.rajjaviya.jetpackcomposeui.ui.components.BondCommonTopBar
+import com.rajjaviya.jetpackcomposeui.ui.navigation.Routes
 import com.rajjaviya.jetpackcomposeui.ui.theme.BackgroundColor
 
 @Composable
 fun BondUserProfileScreen(
     navController: NavHostController,
 ) {
+
+    var selectedImage by remember { mutableStateOf<Uri?>(null) }
+
+    // register photo picket launcher
+    val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { uri -> selectedImage = uri }
+    )
 
     Box(modifier = Modifier.fillMaxSize()) {
 
@@ -56,7 +80,7 @@ fun BondUserProfileScreen(
                     .padding(innerPadding)
                     .padding(horizontal = 32.dp),
             ) {
-                Spacer(Modifier.fillMaxHeight(0.2f))
+                Spacer(Modifier.fillMaxHeight(0.1f))
 
                 // Title
                 Text(
@@ -82,6 +106,80 @@ fun BondUserProfileScreen(
 
                 Spacer(Modifier.height(40.dp))
 
+                Card(
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color(0XFFeaeaea)
+                    ),
+                ) {
+                    Column(modifier = Modifier.padding(8.dp)) {
+                        if (selectedImage != null) {
+                            AsyncImage(
+                                model = selectedImage,
+                                contentScale = ContentScale.Crop,
+                                contentDescription = "user image",
+                                modifier = Modifier
+                                    .size(250.dp)
+                                    .clip(CircleShape),
+                            )
+                        } else {
+                            Surface(
+                                modifier = Modifier
+                                    .size(250.dp),
+                                shape = CircleShape,
+                                color = Color(0XFFf5f0ef)
+                            ) {
+                                TextButton(
+                                    onClick = {
+                                        // Launches the picker limited to images only
+                                        singlePhotoPickerLauncher.launch(
+                                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                                        )
+                                    }
+                                ) {
+                                    Column(
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        verticalArrangement = Arrangement.Center,
+                                    ) {
+                                        Text(
+                                            text = "No photo yet",
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            fontWeight = FontWeight.W300,
+                                            fontSize = 16.sp,
+                                            textAlign = TextAlign.Center,
+                                            color = Color.Black.copy(alpha = 0.7f)
+                                        )
+                                        Spacer(
+                                            modifier = Modifier.height(10.dp)
+                                        )
+
+                                        Text(
+                                            text = "Add profile photo to get started",
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            fontWeight = FontWeight.W300,
+                                            fontSize = 14.sp,
+                                            textAlign = TextAlign.Center,
+                                            color = Color.Black.copy(alpha = 0.5f)
+                                        )
+                                    }
+                                }
+                            }
+                        }
+
+                        Spacer(
+                            modifier = Modifier.height(10.dp)
+                        )
+
+                        Text(
+                            text = "@javiyaraj-48d",
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.W300,
+                            fontSize = 14.sp,
+                            textAlign = TextAlign.Center,
+                            color = Color.Black.copy(alpha = 0.7f)
+                        )
+                    }
+                }
+
             }
         }
 
@@ -94,12 +192,12 @@ fun BondUserProfileScreen(
             contentAlignment = Alignment.BottomEnd
         ) {
             val fabColor by animateColorAsState(
-                targetValue = if (false) Color.Black else Color(0xFFCCCCCC),
+                targetValue = if (selectedImage!=null) Color.Black else Color(0xFFCCCCCC),
                 animationSpec = tween(300),
                 label = "fabColor"
             )
             IconButton(
-                enabled = false,
+                enabled = selectedImage!=null,
                 colors = IconButtonDefaults.iconButtonColors(
                     containerColor = fabColor,
                     contentColor = Color.White,
@@ -109,7 +207,7 @@ fun BondUserProfileScreen(
                 shape = CircleShape,
                 modifier = Modifier.size(55.dp),
                 onClick = {
-
+                    navController.navigate(Routes.BondUserCaptureMemoryScreen)
                 }
             ) {
                 Icon(
