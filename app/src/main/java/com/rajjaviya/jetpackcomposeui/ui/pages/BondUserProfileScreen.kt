@@ -1,7 +1,6 @@
 package com.rajjaviya.jetpackcomposeui.ui.pages
 
 
-import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -32,9 +31,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,23 +40,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import coil3.compose.AsyncImage
 import com.rajjaviya.jetpackcomposeui.ui.components.BondCommonTopBar
 import com.rajjaviya.jetpackcomposeui.ui.navigation.Routes
 import com.rajjaviya.jetpackcomposeui.ui.theme.BackgroundColor
+import com.rajjaviya.jetpackcomposeui.ui.viewmodel.BondOnBoardingViewModel
 
 @Composable
 fun BondUserProfileScreen(
     navController: NavHostController,
+    viewModel: BondOnBoardingViewModel,
 ) {
 
-    var selectedImage by remember { mutableStateOf<Uri?>(null) }
+    val viewModelState by viewModel.uiState.collectAsStateWithLifecycle()
 
     // register photo picket launcher
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = { uri -> selectedImage = uri }
+        onResult = { uri -> viewModel.updateProfileImage(uri) }
     )
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -112,9 +111,9 @@ fun BondUserProfileScreen(
                     ),
                 ) {
                     Column(modifier = Modifier.padding(8.dp)) {
-                        if (selectedImage != null) {
+                        if (viewModelState.profileImage != null) {
                             AsyncImage(
-                                model = selectedImage,
+                                model = viewModelState.profileImage,
                                 contentScale = ContentScale.Crop,
                                 contentDescription = "user image",
                                 modifier = Modifier
@@ -192,12 +191,14 @@ fun BondUserProfileScreen(
             contentAlignment = Alignment.BottomEnd
         ) {
             val fabColor by animateColorAsState(
-                targetValue = if (selectedImage!=null) Color.Black else Color(0xFFCCCCCC),
+                targetValue = if (viewModelState.profileImage != null) Color.Black else Color(
+                    0xFFCCCCCC
+                ),
                 animationSpec = tween(300),
                 label = "fabColor"
             )
             IconButton(
-                enabled = selectedImage!=null,
+                enabled = viewModelState.profileImage != null,
                 colors = IconButtonDefaults.iconButtonColors(
                     containerColor = fabColor,
                     contentColor = Color.White,

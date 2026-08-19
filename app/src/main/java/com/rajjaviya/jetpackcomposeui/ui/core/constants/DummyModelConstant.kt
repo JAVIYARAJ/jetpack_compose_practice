@@ -1,4 +1,4 @@
-package com.rajjaviya.jetpackcomposeui.ui.core
+package com.rajjaviya.jetpackcomposeui.ui.core.constants
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -52,5 +52,10 @@ object DummyModelConstant {
         BondDiscoverChatModel(id = 0, message = "Now give me which good food near my place."),
     )
 
-    val listOfTravelImages = listOf(R.drawable.travel_01,R.drawable.travel_03,R.drawable.travel_03,R.drawable.travel_04,R.drawable.travel_05)
+    val listOfTravelImages = listOf(
+        R.drawable.travel_01,
+        R.drawable.travel_03,
+        R.drawable.travel_03,
+        R.drawable.travel_04,
+        R.drawable.travel_05)
 }

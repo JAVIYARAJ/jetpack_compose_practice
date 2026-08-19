@@ -6,7 +6,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,7 +37,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,8 +46,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -60,17 +56,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import coil3.compose.AsyncImage
 import com.rajjaviya.jetpackcomposeui.R
 import com.rajjaviya.jetpackcomposeui.ui.components.BondCommonTopBar
-import com.rajjaviya.jetpackcomposeui.ui.core.SpeechRecognizerHelper
+import com.rajjaviya.jetpackcomposeui.ui.core.helpers.SpeechRecognizerHelper
 import com.rajjaviya.jetpackcomposeui.ui.navigation.Routes
 import com.rajjaviya.jetpackcomposeui.ui.theme.BackgroundColor
+import com.rajjaviya.jetpackcomposeui.ui.viewmodel.BondOnBoardingViewModel
 
 @Composable
-fun BondUserIntroScreen(navController: NavHostController) {
+fun BondUserIntroScreen(navController: NavHostController, viewModel: BondOnBoardingViewModel) {
 
-    var intro by remember { mutableStateOf("") }
+    val viewModelState by viewModel.uiState.collectAsStateWithLifecycle()
 
     // to identify like mic on or off
     var isListening by remember { mutableStateOf(false) }
@@ -90,7 +89,7 @@ fun BondUserIntroScreen(navController: NavHostController) {
                 isListening = false
             } else {
                 speechRecognizerHelper.startListening(onResult = {
-                    intro = it
+                    viewModel.updateIntro(it)
                     isListening = false
                 }, onError = {
                     isListening = false
@@ -136,8 +135,8 @@ fun BondUserIntroScreen(navController: NavHostController) {
                         containerColor = Color(0XFFeaeaea)
                     ), modifier = Modifier.rotate(-5f)
                 ) {
-                    Image(
-                        painter = painterResource(R.drawable.ic_user_avtar),
+                    AsyncImage(
+                        model = viewModelState.profileImage,
                         contentDescription = "avtar",
                         modifier = Modifier
                             .size(170.dp)
@@ -168,7 +167,9 @@ fun BondUserIntroScreen(navController: NavHostController) {
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 26.dp)
                 ) {
                     val fabColor by animateColorAsState(
-                        targetValue = if (intro.isNotEmpty()) Color.Black else Color(0xFFCCCCCC),
+                        targetValue = if (viewModelState.intro.isNotEmpty()) Color.Black else Color(
+                            0xFFCCCCCC
+                        ),
                         animationSpec = tween(300),
                         label = "fabColor"
                     )
@@ -189,11 +190,11 @@ fun BondUserIntroScreen(navController: NavHostController) {
                             fontStyle = FontStyle.Italic
                         ),
                         keyboardOptions = KeyboardOptions(
-                            imeAction = ImeAction.None
+                            imeAction = ImeAction.Done
                         ),
-                        value = intro,
+                        value = viewModelState.intro,
                         onValueChange = {
-                            intro = it
+                            viewModel.updateIntro(it)
                         },
                         maxLines = 5,
                         modifier = Modifier
@@ -214,7 +215,7 @@ fun BondUserIntroScreen(navController: NavHostController) {
                         Button(
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color(0XFFfdfdfd), contentColor = Color.Black
-                            ), contentPadding = PaddingValues(8.dp), modifier = Modifier.shadow(
+                            ), contentPadding = PaddingValues(2.dp), modifier = Modifier.shadow(
                                 elevation = 5.dp, shape = RoundedCornerShape(30.dp)
                             ), onClick = {
                                 permissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
@@ -245,26 +246,12 @@ fun BondUserIntroScreen(navController: NavHostController) {
                             }
                         }
 
-                        /*Card(
-                            shape = RoundedCornerShape(30.dp), colors = CardDefaults.cardColors(
-                                containerColor = Color(0XFFfdfdfd)
-                            ), modifier = Modifier
-                                .padding(end = 10.dp)
-                                .clickable(onClick = {
-                                    permissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
-                                }), elevation = CardDefaults.cardElevation(
-                                10.dp
-                            )
-                        ) {
-
-                        }*/
-
                         Spacer(
                             modifier = Modifier.width(10.dp)
                         )
 
                         IconButton(
-                            enabled = intro.isNotEmpty(),
+                            enabled = viewModelState.intro.isNotEmpty(),
                             colors = IconButtonDefaults.iconButtonColors(
                                 containerColor = fabColor,
                                 contentColor = Color.White,
@@ -274,7 +261,7 @@ fun BondUserIntroScreen(navController: NavHostController) {
                             shape = CircleShape,
                             modifier = Modifier.size(55.dp),
                             onClick = {
-                                navController.navigate(Routes.BondUserIntroScreen)
+                                navController.navigate(Routes.BondProfilePreviewScreen)
                             }) {
                             Icon(
                                 Icons.AutoMirrored.Filled.ArrowForward, contentDescription = "Next"

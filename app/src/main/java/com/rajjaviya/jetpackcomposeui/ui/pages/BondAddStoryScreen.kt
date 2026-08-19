@@ -24,7 +24,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -51,7 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rajjaviya.jetpackcomposeui.R
 import com.rajjaviya.jetpackcomposeui.ui.components.BondCommonTopBar
-import com.rajjaviya.jetpackcomposeui.ui.core.DummyModelConstant
+import com.rajjaviya.jetpackcomposeui.ui.core.constants.DummyModelConstant
 import com.rajjaviya.jetpackcomposeui.ui.core.Utility
 import com.rajjaviya.jetpackcomposeui.ui.model.BondStoryModel
 
@@ -155,6 +154,7 @@ fun BondScreen() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun BondCard(model: BondStoryModel) {
     Column(

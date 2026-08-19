@@ -43,7 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rajjaviya.jetpackcomposeui.R
 import com.rajjaviya.jetpackcomposeui.ui.components.BondIconComponent
-import com.rajjaviya.jetpackcomposeui.ui.core.DummyModelConstant
+import com.rajjaviya.jetpackcomposeui.ui.core.constants.DummyModelConstant
 import com.rajjaviya.jetpackcomposeui.ui.theme.BackgroundColor
 
 @OptIn(ExperimentalMaterial3Api::class)

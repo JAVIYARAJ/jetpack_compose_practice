@@ -38,10 +38,6 @@ import com.rajjaviya.jetpackcomposeui.ui.navigation.Routes
 fun BondRegisterScreen(navController: NavHostController, viewModel: BondOnBoardingViewModel) {
     // Holds the latest full phone number (country code + digits) from the picker
 
-    val state by viewModel.uiState.collectAsStateWithLifecycle()
-
-
-
     Box(modifier = Modifier.fillMaxSize()) {
 
         Scaffold(

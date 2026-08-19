@@ -18,7 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
@@ -36,9 +35,11 @@ import com.rajjaviya.jetpackcomposeui.R
 import com.rajjaviya.jetpackcomposeui.ui.components.BondBrandLogoAnimation
 import com.rajjaviya.jetpackcomposeui.ui.navigation.Routes
 import com.rajjaviya.jetpackcomposeui.ui.theme.EduSemiBoldFonts
+import com.rajjaviya.jetpackcomposeui.ui.viewmodel.WelcomeScreenViewModel
 
 @Composable
-fun BondWelcomeScreen(navController: NavHostController) {
+fun BondWelcomeScreen(navController: NavHostController, viewModel: WelcomeScreenViewModel) {
+
     Scaffold(
         bottomBar = {
             Column {
@@ -53,6 +54,7 @@ fun BondWelcomeScreen(navController: NavHostController) {
                         contentColor = Color.White
                     ),
                     onClick = {
+                        viewModel.saveVisitFlag()
                         navController.navigate(Routes.BondRegisterScreen)
                     },
                     modifier = Modifier
@@ -87,13 +89,29 @@ fun BondWelcomeScreen(navController: NavHostController) {
                 .padding(it),
         ) {
 
-            Text("Capture your memories and what matters to you", fontSize = 20.sp, fontWeight = FontWeight.SemiBold, fontFamily = EduSemiBoldFonts, maxLines = 3, modifier = Modifier.padding(horizontal = 15.dp), lineHeight = 30.sp, textAlign = TextAlign.Center)
+            Text(
+                "Capture your memories and what matters to you",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.SemiBold,
+                fontFamily = EduSemiBoldFonts,
+                maxLines = 3,
+                modifier = Modifier.padding(horizontal = 15.dp),
+                lineHeight = 30.sp,
+                textAlign = TextAlign.Center
+            )
 
             BondBrandLogoAnimation {
 
             }
 
-            Image(painter = painterResource(R.drawable.bond_app_icon), contentDescription = "logo", modifier = Modifier.fillMaxWidth().padding(horizontal = 15.dp).height(200.dp))
+            Image(
+                painter = painterResource(R.drawable.bond_app_icon),
+                contentDescription = "logo",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 15.dp)
+                    .height(200.dp)
+            )
         }
     }
 }

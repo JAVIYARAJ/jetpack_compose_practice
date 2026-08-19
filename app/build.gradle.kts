@@ -69,5 +69,5 @@ dependencies {
 
     implementation(libs.kompose.country.code.picker)
 
-
+    implementation(libs.androidx.datastore)
 }

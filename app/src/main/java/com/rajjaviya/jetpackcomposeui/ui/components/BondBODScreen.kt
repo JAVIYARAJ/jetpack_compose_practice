@@ -2,7 +2,6 @@ package com.rajjaviya.jetpackcomposeui.ui.components
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -22,6 +21,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
@@ -41,10 +41,13 @@ import androidx.navigation.NavHostController
 import com.rajjaviya.jetpackcomposeui.ui.core.Utility
 import com.rajjaviya.jetpackcomposeui.ui.navigation.Routes
 import com.rajjaviya.jetpackcomposeui.ui.theme.BackgroundColor
+import com.rajjaviya.jetpackcomposeui.ui.viewmodel.BondOnBoardingViewModel
+import java.util.Date
 
 @Composable
 fun BondBODScreen(
     navController: NavHostController,
+    viewModel: BondOnBoardingViewModel,
 ) {
 
     // Use for display date picker composable
@@ -52,7 +55,11 @@ fun BondBODScreen(
     var showDatePicker by remember { mutableStateOf(false) }
 
     // Use for save selected date as state
-    val datePickerState = rememberDatePickerState()
+    val datePickerState = rememberDatePickerState(selectableDates = object : SelectableDates {
+        override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+            return utcTimeMillis <= System.currentTimeMillis()
+        }
+    })
 
 
     // use for display selected date in required format (If not selected in that case we display placeholder)
@@ -67,8 +74,7 @@ fun BondBODScreen(
                 BondCommonTopBar(onTap = {
                     navController.popBackStack()
                 })
-            },
-            containerColor = BackgroundColor
+            }, containerColor = BackgroundColor
         ) { innerPadding ->
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -145,44 +151,38 @@ fun BondBODScreen(
                 shape = CircleShape,
                 modifier = Modifier.size(55.dp),
                 onClick = {
-                    if(selectedDateText.isNotEmpty()){
+                    if (selectedDateText.isNotEmpty()) {
                         navController.navigate(Routes.BondUserProfileScreen)
                     }
-                }
-            ) {
+                }) {
                 Icon(
-                    Icons.AutoMirrored.Filled.ArrowForward,
-                    contentDescription = "Next"
+                    Icons.AutoMirrored.Filled.ArrowForward, contentDescription = "Next"
                 )
             }
         }
 
         // 2. Display the DatePickerDialog overlay
         if (showDatePicker) {
-            DatePickerDialog(
-                onDismissRequest = { showDatePicker = false },
-                confirmButton = {
-                    TextButton(
-                        onClick = {
-                            // Extract selected timestamp in milliseconds
-                            val selection = datePickerState.selectedDateMillis
-                            if (selection != null) {
-                                selectedDateText = Utility.convertMillisToDate(selection)
-                            }
-                            showDatePicker = false
+            DatePickerDialog(onDismissRequest = { showDatePicker = false }, confirmButton = {
+                TextButton(
+                    onClick = {
+                        // Extract selected timestamp in milliseconds
+                        val selection = datePickerState.selectedDateMillis
+                        if (selection != null) {
+                            viewModel.updateBOD(Date(selection))
+                            selectedDateText = Utility.convertMillisToDate(selection)
                         }
-                    ) {
-                        Text("OK")
-                    }
-                },
-                dismissButton = {
-                    TextButton(onClick = { showDatePicker = false }) {
-                        Text("Cancel")
-                    }
+                        showDatePicker = false
+                    }) {
+                    Text("OK")
                 }
-            ) {
+            }, dismissButton = {
+                TextButton(onClick = { showDatePicker = false }) {
+                    Text("Cancel")
+                }
+            }) {
                 // 3. Place the actual DatePicker inside the dialog container
-                DatePicker(state = datePickerState)
+                DatePicker(state = datePickerState,)
             }
         }
     }

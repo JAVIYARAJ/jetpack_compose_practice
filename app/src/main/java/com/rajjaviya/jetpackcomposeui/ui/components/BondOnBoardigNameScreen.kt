@@ -40,7 +40,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
@@ -55,18 +54,22 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.rajjaviya.jetpackcomposeui.ui.navigation.Routes
 import com.rajjaviya.jetpackcomposeui.ui.theme.BackgroundColor
+import com.rajjaviya.jetpackcomposeui.ui.viewmodel.BondOnBoardingViewModel
 
 @Composable
 fun BondOnBoardingNameScreen(
     navController: NavHostController,
+    viewModel: BondOnBoardingViewModel,
 ) {
-    var name by rememberSaveable { mutableStateOf("") }
     var isFocused by remember { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
+
+    val viewModelState by viewModel.uiState.collectAsStateWithLifecycle()
 
     // Auto-open keyboard when screen loads
     LaunchedEffect(Unit) {
@@ -87,7 +90,7 @@ fun BondOnBoardingNameScreen(
         label = "underlineThickness"
     )
 
-    val isNameValid = name.trim().length >= 2
+    val isNameValid = viewModelState.name.trim().length >= 2
 
     Box(modifier = Modifier.fillMaxSize()) {
 
@@ -96,8 +99,7 @@ fun BondOnBoardingNameScreen(
                 BondCommonTopBar(onTap = {
                     navController.popBackStack()
                 })
-            },
-            containerColor = BackgroundColor
+            }, containerColor = BackgroundColor
         ) { innerPadding ->
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -134,8 +136,8 @@ fun BondOnBoardingNameScreen(
 
                 // ── Custom underline text field ─────────────────────────────
                 BasicTextField(
-                    value = name,
-                    onValueChange = { if (it.length <= 40) name = it },
+                    value = viewModelState.name,
+                    onValueChange = { if (it.length <= 40) viewModel.updateName(it) },
                     singleLine = true,
                     cursorBrush = SolidColor(Color.Black),
                     textStyle = TextStyle(
@@ -153,8 +155,7 @@ fun BondOnBoardingNameScreen(
                     keyboardActions = KeyboardActions(
                         onDone = {
                             keyboardController?.hide()
-                        }
-                    ),
+                        }),
                     modifier = Modifier
                         .fillMaxWidth()
                         .focusRequester(focusRequester)
@@ -171,10 +172,9 @@ fun BondOnBoardingNameScreen(
                                     .padding(bottom = 8.dp)
                             ) {
                                 // Placeholder text
-                                if (name.isEmpty()) {
+                                if (viewModelState.name.isEmpty()) {
                                     Text(
-                                        text = "Your name",
-                                        style = TextStyle(
+                                        text = "Your name", style = TextStyle(
                                             fontSize = 28.sp,
                                             fontWeight = FontWeight.W300,
                                             textAlign = TextAlign.Center,
@@ -193,20 +193,19 @@ fun BondOnBoardingNameScreen(
                                     .background(underlineColor)
                             )
                         }
-                    }
-                )
+                    })
                 // ────────────────────────────────────────────────────────────
 
                 Spacer(Modifier.height(16.dp))
 
                 // Character counter — subtle, appears only when typing
                 AnimatedVisibility(
-                    visible = name.isNotEmpty(),
+                    visible = viewModelState.name.isNotEmpty(),
                     enter = fadeIn() + slideInVertically(),
                     exit = fadeOut()
                 ) {
                     Text(
-                        text = "${name.trim().length} / 40",
+                        text = "${viewModelState.name.trim().length} / 40",
                         fontSize = 12.sp,
                         color = Color(0xFFAAAAAA),
                         textAlign = TextAlign.Center,
@@ -217,7 +216,7 @@ fun BondOnBoardingNameScreen(
 
                 // Validation hint — slides in when name is too short
                 AnimatedVisibility(
-                    visible = name.isNotEmpty() && !isNameValid,
+                    visible = viewModelState.name.isNotEmpty() && !isNameValid,
                     enter = fadeIn() + slideInVertically(),
                     exit = fadeOut()
                 ) {
@@ -247,24 +246,18 @@ fun BondOnBoardingNameScreen(
                 label = "fabColor"
             )
             IconButton(
-                enabled = isNameValid,
-                colors = IconButtonDefaults.iconButtonColors(
+                enabled = isNameValid, colors = IconButtonDefaults.iconButtonColors(
                     containerColor = fabColor,
                     contentColor = Color.White,
                     disabledContainerColor = fabColor,
                     disabledContentColor = Color.White,
-                ),
-                shape = CircleShape,
-                modifier = Modifier.size(55.dp),
-                onClick = {
-                    if(isNameValid){
+                ), shape = CircleShape, modifier = Modifier.size(55.dp), onClick = {
+                    if (isNameValid) {
                         navController.navigate(Routes.BondOnBODScreen)
                     }
-                }
-            ) {
+                }) {
                 Icon(
-                    Icons.AutoMirrored.Filled.ArrowForward,
-                    contentDescription = "Next"
+                    Icons.AutoMirrored.Filled.ArrowForward, contentDescription = "Next"
                 )
             }
         }

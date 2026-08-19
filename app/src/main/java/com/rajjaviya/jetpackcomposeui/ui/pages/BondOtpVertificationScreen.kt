@@ -52,7 +52,6 @@ fun BondOtpVerificationScreen(
 
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-
     var otp by rememberSaveable {
         mutableStateOf("")
     }

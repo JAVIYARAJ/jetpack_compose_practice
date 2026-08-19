@@ -1,4 +1,4 @@
-package com.rajjaviya.jetpackcomposeui.ui.core
+package com.rajjaviya.jetpackcomposeui.ui.core.helpers
 
 import android.content.Context
 import android.content.Intent

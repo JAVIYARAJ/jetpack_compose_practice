@@ -10,7 +10,10 @@ import java.util.Locale
 
 object Utility {
     @RequiresApi(Build.VERSION_CODES.O)
-    fun formateDate(dateTime: LocalDateTime): String {
+    fun formateDate(dateTime: LocalDateTime?): String {
+        if (dateTime == null) {
+            return "Date is wrong"
+        }
         val formater = DateTimeFormatter.ofPattern("MMM dd, yyyy", Locale.getDefault())
         return dateTime.format(formater)
     }

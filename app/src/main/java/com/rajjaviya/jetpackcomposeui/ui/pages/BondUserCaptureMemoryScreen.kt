@@ -1,6 +1,5 @@
 package com.rajjaviya.jetpackcomposeui.ui.pages
 
-import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -35,38 +34,36 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import coil3.compose.AsyncImage
 import com.rajjaviya.jetpackcomposeui.ui.components.BondCommonTopBar
 import com.rajjaviya.jetpackcomposeui.ui.navigation.Routes
 import com.rajjaviya.jetpackcomposeui.ui.theme.BackgroundColor
+import com.rajjaviya.jetpackcomposeui.ui.viewmodel.BondOnBoardingViewModel
 
 @Composable
 fun BondUserCaptureMemoryScreen(
     navController: NavHostController,
+    viewModel: BondOnBoardingViewModel,
 ) {
 
-    val selectedImages = remember { mutableStateListOf<Uri?>() }
+    val viewModelState by viewModel.uiState.collectAsStateWithLifecycle()
 
     // register photo picket launcher
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickVisualMedia(), onResult = { uri ->
-            if (uri != null) {
-                selectedImages.add(uri)
+        contract = ActivityResultContracts.PickMultipleVisualMedia(), onResult = { uri ->
+            if (uri.isNotEmpty()) {
+                viewModel.updatePostImages(uri)
             }
         })
 
@@ -118,7 +115,7 @@ fun BondUserCaptureMemoryScreen(
                     verticalArrangement = Arrangement.spacedBy(20.dp),
                 ) {
                     items(
-                        count = selectedImages.size,
+                        count = viewModelState.postImages.size,
                         key = { "key-${it}" },
                     ) { index ->
                         Box {
@@ -131,7 +128,7 @@ fun BondUserCaptureMemoryScreen(
                                     modifier = Modifier.padding(8.dp)
                                 ) {
                                     AsyncImage(
-                                        model = selectedImages[index],
+                                        model = viewModelState.postImages[index],
                                         contentScale = ContentScale.Crop,
                                         contentDescription = "user image",
                                         modifier = Modifier
@@ -155,7 +152,7 @@ fun BondUserCaptureMemoryScreen(
                             }
                             IconButton(
                                 modifier = Modifier.align(Alignment.TopEnd), onClick = {
-                                    selectedImages.removeAt(index)
+                                    viewModel.removePostImage(index)
                                 }) {
                                 Icon(Icons.Default.Cancel, contentDescription = "close")
                             }
@@ -188,7 +185,7 @@ fun BondUserCaptureMemoryScreen(
                                             verticalArrangement = Arrangement.Center,
                                         ) {
                                             Text(
-                                                text = if (selectedImages.isEmpty()) {
+                                                text = if (viewModelState.postImages.isEmpty()) {
                                                     "No photo yet"
                                                 } else {
                                                     "Choose more images"
@@ -245,17 +242,21 @@ fun BondUserCaptureMemoryScreen(
             contentAlignment = Alignment.BottomEnd
         ) {
             val fabColor by animateColorAsState(
-                targetValue = if (selectedImages.isNotEmpty()) Color.Black else Color(0xFFCCCCCC),
-                animationSpec = tween(300),
-                label = "fabColor"
+                targetValue = if (viewModelState.postImages.isNotEmpty()) Color.Black else Color(
+                    0xFFCCCCCC
+                ), animationSpec = tween(300), label = "fabColor"
             )
             IconButton(
-                enabled = selectedImages.isNotEmpty(), colors = IconButtonDefaults.iconButtonColors(
+                enabled = viewModelState.postImages.isNotEmpty(),
+                colors = IconButtonDefaults.iconButtonColors(
                     containerColor = fabColor,
                     contentColor = Color.White,
                     disabledContainerColor = fabColor,
                     disabledContentColor = Color.White,
-                ), shape = CircleShape, modifier = Modifier.size(55.dp), onClick = {
+                ),
+                shape = CircleShape,
+                modifier = Modifier.size(55.dp),
+                onClick = {
                     navController.navigate(Routes.BondUserIntroScreen)
                 }) {
                 Icon(

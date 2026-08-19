@@ -39,4 +39,7 @@ sealed class Routes {
 
     @Serializable
     data object BondUserIntroScreen : Routes()
+
+    @Serializable
+    data object BondProfilePreviewScreen : Routes()
 }
