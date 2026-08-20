@@ -23,6 +23,8 @@ import com.rajjaviya.jetpackcomposeui.ui.pages.BondUserCaptureMemoryScreen
 import com.rajjaviya.jetpackcomposeui.ui.pages.BondUserIntroScreen
 import com.rajjaviya.jetpackcomposeui.ui.pages.BondUserProfileScreen
 import com.rajjaviya.jetpackcomposeui.ui.pages.BondWelcomeScreen
+import com.rajjaviya.jetpackcomposeui.ui.pages.TravelSplashScreen
+import com.rajjaviya.jetpackcomposeui.ui.pages.TravelLoginScreen
 import com.rajjaviya.jetpackcomposeui.ui.pages.UserProfilePreviewScreen
 import com.rajjaviya.jetpackcomposeui.ui.viewmodel.BondOnBoardingViewModel
 import com.rajjaviya.jetpackcomposeui.ui.viewmodel.SplashScreenViewModel
@@ -58,7 +60,7 @@ fun NavGraph(navController: NavHostController) {
         DataStoreModule(context)
     }
 
-    NavHost(navController = navController, startDestination = Routes.SplashScreen) {
+    NavHost(navController = navController, startDestination = Routes.TravelSplashScreen) {
 
 
         composable<Routes.SplashScreen> {
@@ -149,6 +151,21 @@ fun NavGraph(navController: NavHostController) {
             UserProfilePreviewScreen(
                 navController = navController,
                 viewModel = backStackEntry.bondOnBoardingViewModel(navController)
+            )
+        }
+
+        // All travel routes composables
+        composable<Routes.TravelSplashScreen>{
+            TravelSplashScreen(
+                onLoginClick = { navController.navigate(Routes.TravelLoginScreen) }
+            )
+        }
+
+        composable<Routes.TravelLoginScreen> {
+            TravelLoginScreen(
+                onBackClick = { navController.popBackStack() },
+                onSignInClick = { _, _ -> /* TODO: handle sign-in */ },
+                onCreateAccountClick = { /* TODO: navigate to register */ }
             )
         }
     }

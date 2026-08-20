@@ -42,4 +42,12 @@ sealed class Routes {
 
     @Serializable
     data object BondProfilePreviewScreen : Routes()
+
+
+    // All travel routes
+    @Serializable
+    data object TravelSplashScreen : Routes()
+
+    @Serializable
+    data object TravelLoginScreen : Routes()
 }

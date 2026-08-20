@@ -32,6 +32,30 @@ val EduBoldFonts = FontFamily(
     Font(R.font.edu_bold, FontWeight.Normal),
 )
 
+val OsWaldBold = FontFamily(
+    Font(R.font.oswald_bold, FontWeight.Bold),
+)
+
+val OsWaldExtraLight = FontFamily(
+    Font(R.font.oswald_extra_light, FontWeight.Normal),
+)
+
+val OsWaldLight = FontFamily(
+    Font(R.font.oswald_light, FontWeight.Normal),
+)
+
+val OsWaldMedium = FontFamily(
+    Font(R.font.oswald_medium, FontWeight.Medium),
+)
+
+val OsWaldRegular = FontFamily(
+    Font(R.font.oswald_regular, FontWeight.Normal),
+)
+
+val OsWaldSemiBold = FontFamily(
+    Font(R.font.oswald_semi_bold, FontWeight.SemiBold),
+)
+
 // Set of Material typography styles to start with
 val Typography = Typography(
     // Display

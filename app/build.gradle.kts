@@ -71,4 +71,13 @@ dependencies {
     implementation(libs.kompose.country.code.picker)
 
     implementation(libs.androidx.datastore)
+
+
+    // Supabase Bom & Core Plugins
+    implementation(platform(libs.bom))
+    implementation(libs.postgrest.kt) // For Database operations
+    implementation(libs.auth.kt)      // For Auth (Sign in/up)
+
+    // Ktor Engine required by Supabase for networking
+    implementation(libs.ktor.client.okhttp)
 }
