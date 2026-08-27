@@ -50,8 +50,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rajjaviya.jetpackcomposeui.R
 import com.rajjaviya.jetpackcomposeui.ui.components.BondCommonTopBar
-import com.rajjaviya.jetpackcomposeui.ui.core.constants.DummyModelConstant
 import com.rajjaviya.jetpackcomposeui.ui.core.Utility
+import com.rajjaviya.jetpackcomposeui.ui.core.constants.DummyModelConstant
 import com.rajjaviya.jetpackcomposeui.ui.model.BondStoryModel
 
 @RequiresApi(Build.VERSION_CODES.O)

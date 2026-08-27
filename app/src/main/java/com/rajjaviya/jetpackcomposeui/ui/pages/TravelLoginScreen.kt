@@ -69,7 +69,6 @@ import com.rajjaviya.jetpackcomposeui.ui.theme.TravelAccent
 @Composable
 fun TravelLoginScreen(
     onBackClick: () -> Unit = {},
-    onSignInClick: (email: String, password: String) -> Unit = { _, _ -> },
     onCreateAccountClick: () -> Unit = {}
 ) {
 
@@ -267,7 +266,8 @@ fun TravelLoginScreen(
 
                     // ── Sign In Button ─────────────────────────────────────
                     Button(
-                        onClick = { onSignInClick(email, password) },
+                        onClick = {
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(54.dp),

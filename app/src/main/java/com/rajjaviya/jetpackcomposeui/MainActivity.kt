@@ -19,9 +19,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             JetpackComposeUITheme {
-
                 val navController = rememberNavController()
-
                 NavGraph(navController = navController)
             }
         }

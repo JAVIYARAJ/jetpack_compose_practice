@@ -164,7 +164,6 @@ fun NavGraph(navController: NavHostController) {
         composable<Routes.TravelLoginScreen> {
             TravelLoginScreen(
                 onBackClick = { navController.popBackStack() },
-                onSignInClick = { _, _ -> /* TODO: handle sign-in */ },
                 onCreateAccountClick = { /* TODO: navigate to register */ }
             )
         }

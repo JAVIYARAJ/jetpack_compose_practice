@@ -50,13 +50,4 @@ class BondOnBoardingViewModel : ViewModel() {
             intro = intro
         )
     }
-
-    fun logAllData() {
-        Log.d("Viewmodel", "phoneNumber: ${_uiState.value.phoneNumber}")
-        Log.d("Viewmodel", "name: ${_uiState.value.name}")
-        Log.d("Viewmodel", "bod: ${_uiState.value.bod}")
-        Log.d("Viewmodel", "profile_image: ${_uiState.value.profileImage}")
-        Log.d("Viewmodel", "post: ${_uiState.value.postImages.size}")
-        Log.d("Viewmodel", "intro: ${_uiState.value.intro}")
-    }
 }
